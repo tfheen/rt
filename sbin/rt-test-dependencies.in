@@ -249,8 +249,6 @@ Term::ReadKey
 
 $deps{'DEVELOPER'} = [ text_to_hash( << '.') ];
 Email::Abstract
-HTML::Form
-HTML::TokeParser
 Log::Dispatch::Perl
 Mojo::DOM
 Plack::Middleware::Test::StashWarnings 0.06
