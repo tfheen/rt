@@ -176,10 +176,10 @@ sub text_to_hash {
 
 $deps{'CORE'} = [ text_to_hash( << '.') ];
 Apache::Session 1.53
-CGI 3.38
+CGI 3.38                           # 5.10.1 and above
 CGI::Emulate::PSGI
 CGI::PSGI 0.12
-Class::Accessor 0.34
+Class::Accessor 0.34               # For Class::Accessor::Fast
 CSS::Squish 0.06
 DateTime 0.44
 DateTime::Locale 0.40
@@ -187,11 +187,11 @@ DBI 1.37
 DBIx::SearchBuilder 1.63
 Devel::GlobalDestruction
 Devel::StackTrace 1.19
-Digest::SHA
+Digest::SHA                        # 5.10.0 and above
 Email::Address
 Encode 2.39
 File::ShareDir
-File::Temp 0.19
+File::Temp 0.19                    # 5.10.1 and above
 HTML::Entities
 HTML::FormatText
 HTML::Mason 1.43
@@ -205,7 +205,7 @@ IPC::Run3
 JSON
 LWP::Simple
 List::MoreUtils
-Locale::Maketext 1.06
+Locale::Maketext 1.06              # 5.10.0 and above
 Locale::Maketext::Fuzzy 0.11
 Locale::Maketext::Lexicon 0.32
 Log::Dispatch 2.30
@@ -221,7 +221,7 @@ Regexp::Common::net::CIDR
 Regexp::IPv6
 Role::Basic 0.12
 Symbol::Global::Name 0.02
-Sys::Syslog 0.16
+Sys::Syslog 0.16                   # 5.10.0 and above
 Text::Password::Pronounceable
 Text::Quoted 2.02
 Text::Template 1.44
