@@ -180,7 +180,6 @@ CGI 3.38
 CGI::Emulate::PSGI
 CGI::PSGI 0.12
 Class::Accessor 0.34
-Class::ReturnValue 0.40
 CSS::Squish 0.06
 DateTime 0.44
 DateTime::Locale 0.40
