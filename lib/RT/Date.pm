@@ -208,7 +208,7 @@ sub Set {
         # should be applied to absolute times, so compensate shift in NOW
         my $now = time;
         $now += ($self->Localtime( $args{Timezone}, $now ))[9];
-        my $date = Time::ParseDate::parsedate(
+        my ($date, $error) = Time::ParseDate::parsedate(
             $args{'Value'},
             GMT           => 1,
             NOW           => $now,
@@ -216,14 +216,23 @@ sub Set {
             PREFER_PAST   => RT->Config->Get('AmbiguousDayInPast'),
             PREFER_FUTURE => RT->Config->Get('AmbiguousDayInFuture'),
         );
-        # apply timezone offset
-        $date -= ($self->Localtime( $args{Timezone}, $date ))[9];
 
-        $RT::Logger->debug(
-            "RT::Date used Time::ParseDate to make '$args{'Value'}' $date\n"
-        );
+        if ( defined $date ) {
+            # apply timezone offset
+            $date -= ( $self->Localtime( $args{Timezone}, $date ) )[9];
 
-        return $self->Set( Format => 'unix', Value => $date);
+            $RT::Logger->debug(
+                "RT::Date used Time::ParseDate to make '$args{'Value'}' $date\n"
+            );
+
+            return $self->Set( Format => 'unix', Value => $date );
+        }
+        else {
+            $RT::Logger->warning(
+                "Couldn't parse date '$args{'Value'}' by Time::ParseDate"
+            );
+            return $self->Unix(0);
+        }
     }
     else {
         $RT::Logger->error(
