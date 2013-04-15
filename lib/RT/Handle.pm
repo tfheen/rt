@@ -671,10 +671,9 @@ sub InsertInitialData {
 
         $group = RT::Group->new( RT->SystemUser );
         my ( $val, $msg ) = $group->_Create(
-            Type        => $name,
             Domain      => 'SystemInternal',
             Description => 'Pseudogroup for internal use',  # loc
-            Name        => '',
+            Name        => $name,
             Instance    => '',
         );
         return ($val, $msg) unless $val;
@@ -722,7 +721,7 @@ sub InsertInitialData {
 
         $group = RT::Group->new( RT->SystemUser );
         my ( $val, $msg ) = $group->CreateRoleGroup(
-            Type                => $name,
+            Name                => $name,
             Object              => RT->System,
             Description         => 'SystemRolegroup for internal use',  # loc
             InsideTransaction   => 0,
@@ -973,11 +972,11 @@ sub InsertData {
                 } elsif ( $item->{'GroupDomain'} eq 'SystemInternal' ) {
                   $princ->LoadSystemInternalGroup( $item->{'GroupType'} );
                 } elsif ( $item->{'GroupDomain'} eq 'RT::System-Role' ) {
-                  $princ->LoadRoleGroup( Object => RT->System, Type => $item->{'GroupType'} );
+                  $princ->LoadRoleGroup( Object => RT->System, Name => $item->{'GroupType'} );
                 } elsif ( $item->{'GroupDomain'} eq 'RT::Queue-Role' &&
                           $item->{'Queue'} )
                 {
-                  $princ->LoadRoleGroup( Object => $object, Type => $item->{'GroupType'} );
+                  $princ->LoadRoleGroup( Object => $object, Name => $item->{'GroupType'} );
                 } else {
                   $princ->Load( $item->{'GroupId'} );
                 }
