@@ -254,6 +254,13 @@ injection attacks when we pass through user specified values.
 
 =cut
 
+my %check_case_sensitivity = (
+    groups => { 'name' => 1 },
+    queues => { 'name' => 1 },
+    users => { 'name' => 1, emailaddress => 1 },
+    customfields => { 'name' => 1 },
+);
+
 my %deprecated = (
     groups => {
         type => 'Name',
@@ -264,7 +271,6 @@ my %deprecated = (
 sub Limit {
     my $self = shift;
     my %ARGS = (
-        CASESENSITIVE => 1,
         OPERATOR => '=',
         @_,
     );
@@ -306,6 +312,16 @@ sub Limit {
             Message => "$table.$ARGS{'FIELD'} column is deprecated",
             Instead => $instead, Remove => '4.4'
         );
+    }
+
+    unless ( exists $ARGS{CASESENSITIVE} ) {
+        if ( $table && $check_case_sensitivity{ lc $table }{ lc $ARGS{'FIELD'} } ) {
+            RT->Logger->warning(
+                "Case sensitive search by $table.$ARGS{'FIELD'}"
+                ." at ". (caller)[1] . " line ". (caller)[2]
+            );
+        }
+        $ARGS{'CASESENSITIVE'} = 1;
     }
 
     return $self->SUPER::Limit( %ARGS );

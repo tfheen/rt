@@ -1064,7 +1064,7 @@ sub _CustomFieldDecipher {
     elsif ( $field =~ /\D/ ) {
         $queue = '';
         my $cfs = RT::CustomFields->new( $self->CurrentUser );
-        $cfs->Limit( FIELD => 'Name', VALUE => $field );
+        $cfs->Limit( FIELD => 'Name', VALUE => $field, CASESENSITIVE => 0 );
         $cfs->LimitToLookupType('RT::Queue-RT::Ticket');
 
         # if there is more then one field the current user can
@@ -2938,7 +2938,7 @@ sub CurrentUserCanSee {
         my $groups = RT::Groups->new( RT->SystemUser );
         $groups->Limit( FIELD => 'Domain', VALUE => 'RT::Queue-Role' );
         foreach ( @tmp ) {
-            $groups->Limit( FIELD => 'Name', VALUE => $_ );
+            $groups->Limit( FIELD => 'Name', VALUE => $_, CASESENSITIVE => 0 );
         }
         my $principal_alias = $groups->Join(
             ALIAS1 => 'main',
@@ -3044,6 +3044,7 @@ sub CurrentUserCanSee {
                     FIELD           => 'Name',
                     VALUE           => $role,
                     ENTRYAGGREGATOR => 'AND',
+                    CASESENSITIVE   => 0,
                 );
             }
             $limit_queues->( 'AND', @$queues ) if ref $queues;
