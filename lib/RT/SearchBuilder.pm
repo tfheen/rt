@@ -255,7 +255,7 @@ injection attacks when we pass through user specified values.
 =cut
 
 my %check_case_sensitivity = (
-    groups => { 'name' => 1 },
+    groups => { 'name' => 1, domain => 1 },
     queues => { 'name' => 1 },
     users => { 'name' => 1, emailaddress => 1 },
     customfields => { 'name' => 1 },
