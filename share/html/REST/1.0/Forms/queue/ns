@@ -53,10 +53,10 @@ $id
 <%perl>
 use RT::Queues;
 
-my $queues = RT::Queues->new($session{CurrentUser});
-$queues->Limit(FIELD => 'Name', OPERATOR => '=', VALUE => $id);
-if ($queues->Count == 0) {
+my $queue = RT::Queue->new($session{CurrentUser});
+$queue->LoadByCols( Name => $id );
+unless ($queue->id) {
     return (0, "No queue named $id exists.");
 }
-return $queues->Next->Id;
+return $queue->id;
 </%perl>
