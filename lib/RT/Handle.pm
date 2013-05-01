@@ -1130,6 +1130,38 @@ sub InsertData {
     return( 1, 'Done inserting data' );
 }
 
+sub _PreUpgrade {
+    my $self = shift;
+
+    my $groups = RT::Groups->new( RT->SystemUser );
+    $groups->Limit(
+        FIELD => 'Name', OPERATOR => '!=', VALUE => 'main.Type', QUOTEVALUE => 0
+    );
+    $groups->Limit(
+        FIELD => 'Domain',
+        VALUE => 'SystemInternal',
+        CASESENSITIVE => 0,
+    );
+    $groups->RowsPerPage(1);
+    if ( $groups->Next ) {
+        my $dbh = $self->dbh;
+        my $db_type = RT->Config->Get('DatabasseType');
+        if ( $db_type eq 'Oracle' && $db_type eq 'Pg' ) {
+            $dbh->do(
+                "UPDATE Groups SET Name = Type
+                WHERE LOWER(Domain) IN ('aclequivalence', 'systeminternal')
+                    OR LOWER(Domain) LIKE '%-role'"
+            );
+        } else {
+            $dbh->do(
+                "UPDATE Groups SET Name = Type
+                WHERE Domain IN ('ACLEquivalence', 'SystemInternal')
+                    OR Domain LIKE '%-Role'"
+            );
+        }
+    }
+}
+
 =head2 ACLEquivGroupId
 
 Given a userid, return that user's acl equivalence group

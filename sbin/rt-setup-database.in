@@ -159,6 +159,9 @@ my $db_name = RT->Config->Get('DatabaseName') || '';
 my $db_user = RT->Config->Get('DatabaseUser') || '';
 my $db_pass = RT->Config->Get('DatabasePassword') || '';
 
+# pre-upgrade steps should be run only once
+my $done_preupgrade = 0;
+
 # load it here to get error immidiatly if DB type is not supported
 require RT::Handle;
 
@@ -283,6 +286,8 @@ sub action_insert {
                 for @fields;
         }
     }
+
+    $RT::Handle->_PreUpgrade unless $done_preupgrade++;
 
     my @ret = $RT::Handle->InsertData( $file, $root_password );
 
