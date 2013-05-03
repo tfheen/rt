@@ -231,6 +231,10 @@ create table CachedGroupMembers (
         
 ) ;
 
+CREATE INDEX CachedGroupMembers1 (GroupId, MemberId, Disabled);
+CREATE INDEX CachedGroupMembers2 (MemberId, GroupId, Disabled);
+CREATE INDEX CachedGroupMembers3 (MemberId, ImmediateParentId);
+
 --- }}}
 
 --- {{{ Users
