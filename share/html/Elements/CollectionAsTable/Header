@@ -60,7 +60,7 @@ $maxitems     => undef
 
 $AllowSorting  => undef
 $BaseURL       => undef
-@PassArguments => qw(Query Format Rows Page Order OrderBy)
+@PassArguments => qw(Query Format Rows Page Order OrderBy SavedSearchId)
 </%ARGS>
 <tr class="collection-as-table">
 <%PERL>
